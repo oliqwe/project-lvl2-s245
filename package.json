@@ -1,15 +1,25 @@
 {
-  "name": "diff-calculator",
-  "version": "1.0.0",
+  "name": "gendiff-oli",
+  "version": "0.0.6",
   "description": "difference calculator",
   "main": "index.js",
   "scripts": {
+    "eslint": "eslint",
+    "prepublishOnly": "npm run build",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "babel-node": "babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oliqwe/project-lvl2-s245.git"
   },
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "files": [
+    "dist"
+  ],
   "author": "oliqwe",
   "license": "ISC",
   "bugs": {
@@ -25,5 +35,8 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0"
+  },
+  "dependencies": {
+    "commander": "^2.15.1"
   }
 }
