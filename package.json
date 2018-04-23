@@ -1,0 +1,29 @@
+{
+  "name": "diff-calculator",
+  "version": "1.0.0",
+  "description": "difference calculator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oliqwe/project-lvl2-s245.git"
+  },
+  "author": "oliqwe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oliqwe/project-lvl2-s245/issues"
+  },
+  "homepage": "https://github.com/oliqwe/project-lvl2-s245#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0"
+  }
+}
