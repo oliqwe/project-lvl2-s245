@@ -1,9 +1,14 @@
 import fs from 'fs';
 import lodash from 'lodash';
+import path from 'path';
+import getParser from './parser';
+
 
 export default (first, second) => {
-  const before = JSON.parse(fs.readFileSync(first, 'utf8'));
-  const after = JSON.parse(fs.readFileSync(second, 'utf8'));
+  const ext = path.extname(first);
+  const parse = getParser(ext);
+  const before = parse(fs.readFileSync(first, 'utf8'));
+  const after = parse(fs.readFileSync(second, 'utf8'));
 
   const result = Object.keys({ ...before, ...after }).reduce((acc, val) => {
     if (!lodash.has(before, val)) {
