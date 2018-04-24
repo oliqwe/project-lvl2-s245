@@ -18,3 +18,11 @@ test('difference between 2 yaml files', () => {
 
   expect(genDiff(after, before)).toBe(result);
 });
+
+
+test('difference between 2 ini files', () => {
+  const after = '__tests__/__fixtures__/before.ini';
+  const before = '__tests__/__fixtures__/after.ini';
+
+  expect(genDiff(after, before)).toBe(result);
+});
