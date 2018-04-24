@@ -1,26 +1,27 @@
-import program from 'commander';
 import fs from 'fs';
-import path from 'path';
+import lodash from 'lodash';
 
-const findDifferences = (before, after) =>{
-  const parsedBefore = JSON.parse(before);
-  const parsedAfter = JSON.parse(after);
-  console.log(parsedBefore, parsedAfter)
-}
+export default (first, second) => {
+  const before = JSON.parse(fs.readFileSync(first, 'utf8'));
+  const after = JSON.parse(fs.readFileSync(second, 'utf8'));
 
-program
-  .version('0.0.6')
-  .description('Compares two configuration files and shows a difference.')
-  .option('-f, --format [type]', 'output format')
-  .arguments('<firstConfig> <secondConfig>')
-  .action((before, after) => {
-    const first = fs.readFileSync(path.join(__dirname + "/json", before), 'utf8')
-    const second = fs.readFileSync(path.join(__dirname + "/json", after), 'utf8')
-    findDifferences(first, second)
-  })
+  const missingRows = Object.keys(before).reduce((acc, val) =>
+    (!lodash.has(after, val) ? [...acc, ['-', [val, before[val]]]] : acc), []);
 
-  
+  const presentRows = Object.keys(after).reduce((acc, val) =>
+    (!lodash.has(before, val) ? [...acc, ['+', [val, after[val]]]] : acc), []);
 
+  const differenceRow = Object.keys(before).reduce((acc, val) => {
+    if (after[val] === undefined) {
+      return acc;
+    }
 
+    return before[val] === after[val]
+      ? [...acc, [' ', [val, before[val]]]]
+      : [...acc, ['+', [val, after[val]]], ['-', [val, before[val]]]];
+  }, []);
 
-export default args => program.parse(args)
+  const res = [...differenceRow, ...missingRows, ...presentRows].reduce((acc, val) => `${acc} ${val[0]} ${val[1].join(': ')}\n`, '');
+  return `{\n${res}}`;
+};
+

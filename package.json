@@ -1,6 +1,6 @@
 {
   "name": "gendiff-oli",
-  "version": "0.0.10",
+  "version": "0.0.17",
   "description": "difference calculator",
   "main": "index.js",
   "scripts": {
@@ -35,6 +35,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-babel": "^5.1.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jest": "^21.15.1",
     "jest": "^22.4.3",
