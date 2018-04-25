@@ -15,4 +15,5 @@ extends:
   - 'plugin:jest/recommended'
 
 rules:
+  "linebreak-style": 0
   no-console: 0
