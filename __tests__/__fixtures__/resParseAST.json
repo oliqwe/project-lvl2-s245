@@ -1,0 +1,44 @@
+[
+  {
+    "name": "common",
+    "status": "",
+    "children": [
+      { "name": "setting1", "value": "Value 1", "status": "" },
+      { "name": "setting2", "value": "200", "status": "-" },
+      { "name": "setting3", "value": "true", "status": "-" },
+      { "name": "setting3", "value": { "key": "value" }, "status": "+" },
+      {
+        "name": "setting6",
+        "value": "",
+        "status": "",
+        "children": [
+          { "name": "key", "value": "value", "status": "" },
+          { "name": "ops", "value": "vops", "status": "+" }
+        ]
+      },
+      { "name": "setting4", "value": "blah blah", "status": "" },
+      { "name": "setting5", "value": { "key5": "value5" }, "status": "+" }
+    ]
+  },
+  {
+    "name": "group1",
+    "status": "",
+    "children": [
+      { "name": "baz", "value": "bars", "status": "+" },
+      { "name": "baz", "value": "bas", "status": "-" },
+      { "name": "foo", "value": "bar", "status": "" },
+      { "name": "nest", "value": { "key": "value" }, "status": "-" },
+      { "name": "nest", "value": "str", "status": "+" }
+    ]
+  },
+  {
+    "name": "group2",
+    "status": "-",
+    "children": { "abc": "12345" }
+  },
+  {
+    "name": "group3",
+    "status": "+",
+    "children": { "abc": "12345" }
+  }
+]
