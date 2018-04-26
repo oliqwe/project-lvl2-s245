@@ -3,20 +3,57 @@ import lodash from 'lodash';
 import path from 'path';
 import getParser from './parser';
 
-// const propertyActions = [
-//   {
-//     name: 'body',
-//     check: arg => typeof arg === 'string',
-//   },
-//   {
-//     name: 'children',
-//     check: arg => arg instanceof Array,
-//   },
-//   {
-//     name: 'attributes',
-//     check: arg => arg instanceof Object,
-//   },
-// ];
+const parseAST = (before, after) => {
+  const keys = lodash.union(lodash.keys(before), lodash.keys(after));
+
+  return keys.reduce((acc, val) => {
+    if (before[val] instanceof Object && after[val] instanceof Object) {
+      return [...acc, {
+        name: val, status: ' ', value: '', children: parseAST(before[val], after[val]),
+      }];
+    }
+
+    if (!lodash.has(before, val)) {
+      return [...acc, { name: val, status: '+', value: after[val] }];
+    }
+
+    if (!lodash.has(after, val)) {
+      return [...acc, { name: val, status: '-', value: before[val] }];
+    }
+
+    if (lodash.has(before, val) && lodash.has(after, val)) {
+      if (before[val] === after[val]) {
+        return [...acc, { name: val, status: ' ', value: before[val] }];
+      } else if (before[val] !== after[val]) {
+        return [...acc, { name: val, status: '+', value: after[val] }, { name: val, status: '-', value: before[val] }];
+      }
+    }
+    return acc;
+  }, []);
+};
+
+const stringify = (obj, offset) => {
+  if (obj instanceof Object) {
+    const str = Object.keys(obj).map(val => `${' '.repeat(offset + 5)}${val}: ${obj[val]}`).join('\n');
+    return `{\n${str}\n${' '.repeat(offset + 1)}}`;
+  }
+  return `${obj}`;
+};
+
+
+export const renderAST = (ast, offset = 3) => ast.map((val) => {
+  const {
+    name, status, value, children,
+  } = val;
+
+  if (children instanceof Array) {
+    return [`${' '.repeat(offset)} ${status}${name}: {\n${renderAST(children, offset + 4)}\n${' '.repeat(offset + 2)}}`];
+  }
+
+  if (val instanceof Object) {
+    return [`${' '.repeat(offset)}${status} ${name}: ${stringify(value, offset + 1)}`];
+  }
+}).join('\n');
 
 
 export default (first, second) => {
@@ -24,71 +61,6 @@ export default (first, second) => {
   const parse = getParser(ext);
   const before = parse(fs.readFileSync(first, 'utf8'));
   const after = parse(fs.readFileSync(second, 'utf8'));
-
-  const getPropertyAction = arg => find(propertyActions, ({ check }) => check(arg));
-
-  //   const tag = (rest, root) => Object.keys(rest).reduce((acc, arg) =>
-  //     //  const { name } = getPropertyAction(arg);
-  //    //  console.log(acc, arg);
-  //      ({ ...acc, name: arg })
-  //     //  return { ...acc, [name]: arg };
-  //   , root);
-
-  const parseAst = (tree, bf, af) => {
-
-    return Object.keys(tree).reduce((acc, val) => {
-      const rest = tree[val];
-
-
-      // const root = {
-      //   name: val,
-      //   state: '',
-      //   value: '',
-      // };
-
-      if (!lodash.has(bf, val)) {
-        //   console.log(val ,  af[val]);
-        return [...acc, { name: val, state: '+', value: { ...af[val] } }];
-        //   return { acc };
-      }
-      if (!lodash.has(af, val)) {
-      //   console.log(val ,  af[val]);
-        return [...acc, { name: val, state: '-', value: { ...bf[val] } }];
-      //   return { acc };
-      }
-      if (tree[val] === 'string') {
-        return [...acc, { name: val, state: ' ', value: tree[val] }];
-      }
-
-      if (bf[val] instanceof Object && af[val] instanceof Object) {
-
-        return [...acc, { name: val, state: '', children: Object.keys(rest).map((i) => {
-          console.log(i);
-          return parseAst(tree[val], bf[val], af[val] );
-        }) }];
-      }
-
-      console.log(acc);
-
-      // if (before[val] instanceof Object && af[val] instanceof Object) {
-      //   console.log(before[val], af[val]);
-      //   //   return [...acc, `   ${val}: ${before[val]}`];
-      // }
-
-      // return [...acc, ` + ${val}: ${af[val]}`, ` - ${val}: ${before[val]}`];
-
-      // if(lodash.has(before[val], val))
-
-      // lodash.has(before[val], before[val]);
-
-      // if(lodash.has(before, val)arg instanceof Object)
-
-      // const node = tag(rest, root);
-
-      // return { ...node, children: node.children.map() };
-      return acc;
-    }, []);
-  };
-  const res = parseAst({ ...before, ...after }, before, after);
-  console.log(res);
+  const res = parseAST(before, after);
+  return res;
 };

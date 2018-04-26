@@ -1,15 +1,24 @@
 
 import fs from 'fs';
 import genDiff from './../src';
-import parseAST from './../src/parseAst';
+import parseAST, { renderAST } from './../src/parseAst';
+import resParseAST from './__fixtures__/resParseAST';
 
 test('compare parsed AST with result', () => {
-  const result = '__tests__/__fixtures__/resParseAST.json';
   const after = '__tests__/__fixtures__/beforeAST.json';
   const before = '__tests__/__fixtures__/afterAST.json';
-  expect(parseAST(after, before)).toBe(result);
+  expect(parseAST(after, before)).toEqual(resParseAST);
 });
 
+test('compare render AST with result', () => {
+  const result = '__tests__/__fixtures__/resRenderAST.txt';
+  const after = '__tests__/__fixtures__/beforeAST.json';
+  const before = '__tests__/__fixtures__/afterAST.json';
+
+  const testData = `{\n${renderAST(parseAST(after, before))}\n}`;
+  console.log(testData)
+  expect(testData).toBe(result);
+});
 
 // test('difference between 2 json files', () => {
 //   const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
@@ -36,3 +45,4 @@ test('compare parsed AST with result', () => {
 
 //   expect(genDiff(after, before)).toBe(result);
 // });
+
