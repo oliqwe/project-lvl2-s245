@@ -50,10 +50,7 @@ export const renderAST = (ast, offset = 2) => ast.map((val) => {
     return [`${' '.repeat(offset)} ${status}${name}: {\n${renderAST(children, offset + 4)}\n${' '.repeat(offset + 2)}}`];
   }
 
-  if (val instanceof Object) {
-    return [`${' '.repeat(offset)}${status} ${name}: ${stringify(value, offset + 1)}`];
-  }
-  return val;
+  return [`${' '.repeat(offset)}${status} ${name}: ${stringify(value, offset + 1)}`];
 }).join('\n');
 
 
@@ -62,6 +59,6 @@ export default (first, second) => {
   const parse = getParser(ext);
   const before = parse(fs.readFileSync(first, 'utf8'));
   const after = parse(fs.readFileSync(second, 'utf8'));
-  const res = parseAST(before, after);
-  return res;
+  const res = renderAST(parseAST(before, after));
+  return `{\n${res}\n}`;
 };

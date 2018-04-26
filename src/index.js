@@ -13,15 +13,16 @@ export default (first, second) => {
 
   const res = keys.map((val) => {
     if (!lodash.has(before, val)) {
-      return [` + ${val}: ${after[val]}`];
+      return [`  + ${val}: ${after[val]}`];
     }
     if (!lodash.has(after, val)) {
-      return [` - ${val}: ${before[val]}`];
+      return [`  - ${val}: ${before[val]}`];
     }
     if (before[val] === after[val]) {
-      return [`   ${val}: ${before[val]}`];
+      return [`    ${val}: ${before[val]}`];
     }
-    return [` + ${val}: ${after[val]}`, ` - ${val}: ${before[val]}`];
+    return [`  + ${val}: ${after[val]}`, `  - ${val}: ${before[val]}`];
   });
-  return `{\n${lodash.flatten(res).join('\n')}\n}`;
+
+  return `{\n${lodash.flatten(res).join('\n')}\n  }`;
 };

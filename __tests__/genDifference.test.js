@@ -1,45 +1,79 @@
-
-import fs from 'fs';
 import genDiff from './../src';
-import parseAST, { renderAST } from './../src/parseAst';
-// import resParseAST from './__fixtures__/resParseAST';
+import genDiffAST from './../src/gendiffAST';
 
-// test('compare parsed AST with result', () => {
-//   const after = '__tests__/__fixtures__/beforeAST.json';
-//   const before = '__tests__/__fixtures__/afterAST.json';
-//   expect(parseAST(after, before)).toEqual(resParseAST);
-// });
 
-test('compare render AST with result', () => {
-  const result = fs.readFileSync('__tests__/__fixtures__/resRenderAST.txt', 'utf8');
-  const after = '__tests__/__fixtures__/beforeAST.json';
-  const before = '__tests__/__fixtures__/afterAST.json';
-  expect(`{\n${renderAST(parseAST(after, before))}\n}`).toBe(result);
+describe('compare AST json, yaml, ini files', () => {
+  const expected = `{
+    common: {
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: {
+            key: value
+        }
+        setting6: {
+            key: value
+          + ops: vops
+        }
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
+  - group2: {
+        abc: 12345
+    }
+  + group3: {
+        fee: 100500
+    }
+}`;
+
+  test('difference between AST files JSON', () => {
+    const after = '__tests__/__fixtures__/json/beforeAST.json';
+    const before = '__tests__/__fixtures__/json/afterAST.json';
+    expect(genDiffAST(after, before)).toEqual(expected);
+  });
 });
 
-test('difference between 2 json files', () => {
-  const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
-  const after = '__tests__/__fixtures__/before.json';
-  const before = '__tests__/__fixtures__/after.json';
 
-  expect(genDiff(after, before)).toBe(result);
+describe('compate flat json, yaml, ini files', () => {
+  const expected = `{
+    host: hexlet.io
+  + timeout: 20
+  - timeout: 50
+  - proxy: 123.234.53.22
+  + verbose: true
+  }`;
+
+  test('difference between 2 json files', () => {
+    const after = '__tests__/__fixtures__/json/before.json';
+    const before = '__tests__/__fixtures__/json/after.json';
+
+    expect(genDiff(after, before)).toBe(expected);
+  });
+
+
+  test('difference between 2 yaml files', () => {
+    const after = '__tests__/__fixtures__/yaml/before.yaml';
+    const before = '__tests__/__fixtures__/yaml/after.yaml';
+
+    expect(genDiff(after, before)).toBe(expected);
+  });
+
+
+  test('difference between 2 ini files', () => {
+    const after = '__tests__/__fixtures__/ini/before.ini';
+    const before = '__tests__/__fixtures__/ini/after.ini';
+
+    expect(genDiff(after, before)).toBe(expected);
+  });
 });
-
-
-test('difference between 2 yaml files', () => {
-  const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
-  const after = '__tests__/__fixtures__/before.yaml';
-  const before = '__tests__/__fixtures__/after.yaml';
-
-  expect(genDiff(after, before)).toBe(result);
-});
-
-
-test('difference between 2 ini files', () => {
-  const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
-  const after = '__tests__/__fixtures__/before.ini';
-  const before = '__tests__/__fixtures__/after.ini';
-
-  expect(genDiff(after, before)).toBe(result);
-});
-
