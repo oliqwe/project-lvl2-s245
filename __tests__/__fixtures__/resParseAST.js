@@ -3,8 +3,8 @@ export default [
     children: [
       { name: 'setting1', status: ' ', value: 'Value 1' },
       { name: 'setting2', status: '-', value: '200' },
-      { name: 'setting3', status: '+', value: { key: 'value' } },
       { name: 'setting3', status: '-', value: true },
+      { name: 'setting3', status: '+', value: { key: 'value' } },
       {
         children: [
           { name: 'key', status: ' ', value: 'value' },
@@ -23,11 +23,11 @@ export default [
   },
   {
     children: [
-      { name: 'baz', status: '+', value: 'bars' },
       { name: 'baz', status: '-', value: 'bas' },
+      { name: 'baz', status: '+', value: 'bars' },
       { name: 'foo', status: ' ', value: 'bar' },
-      { name: 'nest', status: '+', value: 'str' },
       { name: 'nest', status: '-', value: { key: 'value' } },
+      { name: 'nest', status: '+', value: 'str' },
     ],
     name: 'group1',
     status: ' ',

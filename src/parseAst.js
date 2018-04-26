@@ -25,7 +25,7 @@ const parseAST = (before, after) => {
       if (before[val] === after[val]) {
         return [...acc, { name: val, status: ' ', value: before[val] }];
       } else if (before[val] !== after[val]) {
-        return [...acc, { name: val, status: '+', value: after[val] }, { name: val, status: '-', value: before[val] }];
+        return [...acc, { name: val, status: '-', value: before[val] }, { name: val, status: '+', value: after[val] }];
       }
     }
     return acc;
@@ -41,7 +41,7 @@ const stringify = (obj, offset) => {
 };
 
 
-export const renderAST = (ast, offset = 3) => ast.map((val) => {
+export const renderAST = (ast, offset = 2) => ast.map((val) => {
   const {
     name, status, value, children,
   } = val;
@@ -53,6 +53,7 @@ export const renderAST = (ast, offset = 3) => ast.map((val) => {
   if (val instanceof Object) {
     return [`${' '.repeat(offset)}${status} ${name}: ${stringify(value, offset + 1)}`];
   }
+  return val;
 }).join('\n');
 
 

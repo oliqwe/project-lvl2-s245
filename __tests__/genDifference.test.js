@@ -11,38 +11,35 @@ test('compare parsed AST with result', () => {
 });
 
 test('compare render AST with result', () => {
-  const result = '__tests__/__fixtures__/resRenderAST.txt';
+  const result = fs.readFileSync('__tests__/__fixtures__/resRenderAST.txt', 'utf8');
   const after = '__tests__/__fixtures__/beforeAST.json';
   const before = '__tests__/__fixtures__/afterAST.json';
-
-  const testData = `{\n${renderAST(parseAST(after, before))}\n}`;
-  console.log(testData)
-  expect(testData).toBe(result);
+  expect(`{\n${renderAST(parseAST(after, before))}\n}`).toBe(result);
 });
 
-// test('difference between 2 json files', () => {
-//   const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
-//   const after = '__tests__/__fixtures__/before.json';
-//   const before = '__tests__/__fixtures__/after.json';
+test('difference between 2 json files', () => {
+  const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
+  const after = '__tests__/__fixtures__/before.json';
+  const before = '__tests__/__fixtures__/after.json';
 
-//   expect(genDiff(after, before)).toBe(result);
-// });
-
-
-// test('difference between 2 yaml files', () => {
-//   const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
-//   const after = '__tests__/__fixtures__/before.yaml';
-//   const before = '__tests__/__fixtures__/after.yaml';
-
-//   expect(genDiff(after, before)).toBe(result);
-// });
+  expect(genDiff(after, before)).toBe(result);
+});
 
 
-// test('difference between 2 ini files', () => {
-//   const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
-//   const after = '__tests__/__fixtures__/before.ini';
-//   const before = '__tests__/__fixtures__/after.ini';
+test('difference between 2 yaml files', () => {
+  const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
+  const after = '__tests__/__fixtures__/before.yaml';
+  const before = '__tests__/__fixtures__/after.yaml';
 
-//   expect(genDiff(after, before)).toBe(result);
-// });
+  expect(genDiff(after, before)).toBe(result);
+});
+
+
+test('difference between 2 ini files', () => {
+  const result = fs.readFileSync('__tests__/__fixtures__/result.txt', 'utf8');
+  const after = '__tests__/__fixtures__/before.ini';
+  const before = '__tests__/__fixtures__/after.ini';
+
+  expect(genDiff(after, before)).toBe(result);
+});
 
