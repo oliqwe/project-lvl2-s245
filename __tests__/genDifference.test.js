@@ -2,13 +2,13 @@
 import fs from 'fs';
 import genDiff from './../src';
 import parseAST, { renderAST } from './../src/parseAst';
-import resParseAST from './__fixtures__/resParseAST';
+// import resParseAST from './__fixtures__/resParseAST';
 
-test('compare parsed AST with result', () => {
-  const after = '__tests__/__fixtures__/beforeAST.json';
-  const before = '__tests__/__fixtures__/afterAST.json';
-  expect(parseAST(after, before)).toEqual(resParseAST);
-});
+// test('compare parsed AST with result', () => {
+//   const after = '__tests__/__fixtures__/beforeAST.json';
+//   const before = '__tests__/__fixtures__/afterAST.json';
+//   expect(parseAST(after, before)).toEqual(resParseAST);
+// });
 
 test('compare render AST with result', () => {
   const result = fs.readFileSync('__tests__/__fixtures__/resRenderAST.txt', 'utf8');
