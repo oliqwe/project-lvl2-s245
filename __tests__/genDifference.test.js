@@ -42,6 +42,18 @@ describe('compare AST json, yaml, ini files', () => {
     const before = '__tests__/__fixtures__/json/afterAST.json';
     expect(genDiffAST(after, before)).toEqual(expected);
   });
+
+  test('difference between AST files YAML', () => {
+    const after = '__tests__/__fixtures__/yaml/beforeAST.yaml';
+    const before = '__tests__/__fixtures__/yaml/afterAST.yaml';
+    expect(genDiffAST(after, before)).toEqual(expected);
+  });
+
+  test('difference between AST files INI', () => {
+    const after = '__tests__/__fixtures__/ini/beforeAST.ini';
+    const before = '__tests__/__fixtures__/ini/afterAST.ini';
+    expect(genDiffAST(after, before)).toEqual(expected);
+  });
 });
 
 
