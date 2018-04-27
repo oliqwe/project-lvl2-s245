@@ -1,30 +1,29 @@
 
-import lodash from 'lodash';
-
+import _ from 'lodash';
 
 export const parseAST = (before, after) => {
-  const keys = lodash.union(lodash.keys(before), lodash.keys(after));
+  const keys = _.union(_.keys(before), _.keys(after));
 
   return keys.reduce((acc, val) => {
     if (before[val] instanceof Object && after[val] instanceof Object) {
       return [...acc, {
-        name: val, status: ' ', value: '', children: parseAST(before[val], after[val]),
+        name: val, status: 'hasChildren', children: parseAST(before[val], after[val]),
       }];
     }
 
-    if (!lodash.has(before, val)) {
-      return [...acc, { name: val, status: '+', value: after[val] }];
+    if (!_.has(before, val)) {
+      return [...acc, { name: val, status: 'added', value: after[val] }];
     }
 
-    if (!lodash.has(after, val)) {
-      return [...acc, { name: val, status: '-', value: before[val] }];
+    if (!_.has(after, val)) {
+      return [...acc, { name: val, status: 'removed', value: before[val] }];
     }
 
-    if (lodash.has(before, val) && lodash.has(after, val)) {
+    if (_.has(before, val) && _.has(after, val)) {
       if (before[val] === after[val]) {
-        return [...acc, { name: val, status: ' ', value: before[val] }];
+        return [...acc, { name: val, status: 'unchanged', value: before[val] }];
       } else if (before[val] !== after[val]) {
-        return [...acc, { name: val, status: '-', value: before[val] }, { name: val, status: '+', value: after[val] }];
+        return [...acc, { name: val, status: 'changed', value: { removed: before[val], added: after[val] } }];
       }
     }
     return acc;
@@ -40,13 +39,29 @@ const stringify = (obj, offset) => {
 };
 
 
-export const renderAST = (ast, offset = 2) => lodash.flatten(ast.map((val) => {
+export const renderAST = (ast, offset = 2) => _.flatten(ast.map((node) => {
   const {
     name, status, value, children,
-  } = val;
+  } = node;
 
-  if (children instanceof Array) {
-    return `${' '.repeat(offset)} ${status}${name}: {\n${renderAST(children, offset + 4)}\n${' '.repeat(offset + 2)}}`;
+  if (status === 'hasChildren') {
+    return `${' '.repeat(offset)}  ${name}: {\n${renderAST(children, offset + 4)}\n${' '.repeat(offset + 2)}}`;
   }
-  return `${' '.repeat(offset)}${status} ${name}: ${stringify(value, offset + 1)}`;
+
+  if (status === 'changed') {
+    return [
+      `${' '.repeat(offset)}- ${name}: ${stringify(value.removed, offset + 1)}`,
+      `${' '.repeat(offset)}+ ${name}: ${stringify(value.added, offset + 1)}`,
+    ];
+  }
+
+  if (status === 'added') {
+    return `${' '.repeat(offset)}+ ${name}: ${stringify(value, offset + 1)}`;
+  }
+
+  if (status === 'removed') {
+    return `${' '.repeat(offset)}- ${name}: ${stringify(value, offset + 1)}`;
+  }
+
+  return `${' '.repeat(offset)}  ${name}: ${stringify(value, offset + 1)}`;
 })).join('\n');
