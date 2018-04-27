@@ -1,4 +1,3 @@
-import fs from 'fs';
 import genDiff from './../src';
 // import genDiffAST from './../src/gendiffAST';
 

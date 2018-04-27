@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import getParser from './parser';
-import { parseAST , renderAST} from "./gendiffAST";
+import { parseAST, renderAST } from './gendiffAST';
 
 export default (first, second) => {
   const ext = path.extname(first);
