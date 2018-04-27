@@ -8,8 +8,7 @@ program
   .option('-f, --format [type]', 'output format')
   .arguments('<firstConfig> <secondConfig>')
   .action((before, after) => {
-    console.log(program.format);
-    console.log(genDiff(before, after));
+    console.log(genDiff(before, after, program.format));
   });
 
 program.parse(process.argv);

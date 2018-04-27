@@ -1,9 +1,8 @@
-import fs from 'fs';
-import lodash from 'lodash';
-import path from 'path';
-import getParser from './parser';
 
-const parseAST = (before, after) => {
+import lodash from 'lodash';
+
+
+export const parseAST = (before, after) => {
   const keys = lodash.union(lodash.keys(before), lodash.keys(after));
 
   return keys.reduce((acc, val) => {
@@ -41,24 +40,13 @@ const stringify = (obj, offset) => {
 };
 
 
-export const renderAST = (ast, offset = 2) => ast.map((val) => {
+export const renderAST = (ast, offset = 2) => lodash.flatten(ast.map((val) => {
   const {
     name, status, value, children,
   } = val;
 
   if (children instanceof Array) {
-    return [`${' '.repeat(offset)} ${status}${name}: {\n${renderAST(children, offset + 4)}\n${' '.repeat(offset + 2)}}`];
+    return `${' '.repeat(offset)} ${status}${name}: {\n${renderAST(children, offset + 4)}\n${' '.repeat(offset + 2)}}`;
   }
-
-  return [`${' '.repeat(offset)}${status} ${name}: ${stringify(value, offset + 1)}`];
-}).join('\n');
-
-
-export default (first, second) => {
-  const ext = path.extname(first);
-  const parse = getParser(ext);
-  const before = parse(fs.readFileSync(first, 'utf8'));
-  const after = parse(fs.readFileSync(second, 'utf8'));
-  const res = renderAST(parseAST(before, after));
-  return `{\n${res}\n}`;
-};
+  return `${' '.repeat(offset)}${status} ${name}: ${stringify(value, offset + 1)}`;
+})).join('\n');

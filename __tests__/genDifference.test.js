@@ -1,8 +1,10 @@
+import fs from 'fs';
 import genDiff from './../src';
-import genDiffAST from './../src/gendiffAST';
-
+// import genDiffAST from './../src/gendiffAST';
 
 describe('compare AST json, yaml, ini files', () => {
+  // const expected = fs.readFileSync('__tests__/__fixtures__/expectedAST.txt', 'utf8');
+
   const expected = `{
     common: {
         setting1: Value 1
@@ -40,52 +42,46 @@ describe('compare AST json, yaml, ini files', () => {
   test('difference between AST files JSON', () => {
     const after = '__tests__/__fixtures__/json/beforeAST.json';
     const before = '__tests__/__fixtures__/json/afterAST.json';
-    expect(genDiffAST(after, before)).toEqual(expected);
+    expect(genDiff(after, before)).toEqual(expected);
   });
 
   test('difference between AST files YAML', () => {
     const after = '__tests__/__fixtures__/yaml/beforeAST.yaml';
     const before = '__tests__/__fixtures__/yaml/afterAST.yaml';
-    expect(genDiffAST(after, before)).toEqual(expected);
+    expect(genDiff(after, before)).toEqual(expected);
   });
 
   test('difference between AST files INI', () => {
     const after = '__tests__/__fixtures__/ini/beforeAST.ini';
     const before = '__tests__/__fixtures__/ini/afterAST.ini';
-    expect(genDiffAST(after, before)).toEqual(expected);
+    expect(genDiff(after, before)).toEqual(expected);
   });
 });
 
 
-describe('compate flat json, yaml, ini files', () => {
-  const expected = `{
-    host: hexlet.io
-  + timeout: 20
-  - timeout: 50
-  - proxy: 123.234.53.22
-  + verbose: true
-  }`;
+// describe('compate flat json, yaml, ini files', () => {
+//   const expected = fs.readFileSync('__tests__/__fixtures__/expectedFlat.txt', 'utf-8');
 
-  test('difference between 2 json files', () => {
-    const after = '__tests__/__fixtures__/json/before.json';
-    const before = '__tests__/__fixtures__/json/after.json';
+//   test('difference between 2 json files', () => {
+//     const after = '__tests__/__fixtures__/json/before.json';
+//     const before = '__tests__/__fixtures__/json/after.json';
 
-    expect(genDiff(after, before)).toBe(expected);
-  });
+//     expect(genDiff(after, before)).toBe(expected);
+//   });
 
 
-  test('difference between 2 yaml files', () => {
-    const after = '__tests__/__fixtures__/yaml/before.yaml';
-    const before = '__tests__/__fixtures__/yaml/after.yaml';
+//   test('difference between 2 yaml files', () => {
+//     const after = '__tests__/__fixtures__/yaml/before.yaml';
+//     const before = '__tests__/__fixtures__/yaml/after.yaml';
 
-    expect(genDiff(after, before)).toBe(expected);
-  });
+//     expect(genDiff(after, before)).toBe(expected);
+//   });
 
 
-  test('difference between 2 ini files', () => {
-    const after = '__tests__/__fixtures__/ini/before.ini';
-    const before = '__tests__/__fixtures__/ini/after.ini';
+//   test('difference between 2 ini files', () => {
+//     const after = '__tests__/__fixtures__/ini/before.ini';
+//     const before = '__tests__/__fixtures__/ini/after.ini';
 
-    expect(genDiff(after, before)).toBe(expected);
-  });
-});
+//     expect(genDiff(after, before)).toBe(expected);
+//   });
+// });
