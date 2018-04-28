@@ -5,7 +5,7 @@ import getParser from './parser';
 import createAST from './gendiffAST';
 import getRenderMethod from './renderers';
 
-export default (first, second, format = 'flat') => {
+export default (first, second, format = 'plain') => {
   const ext = path.extname(first);
   const parse = getParser(ext);
   const before = parse(fs.readFileSync(first, 'utf8'));
