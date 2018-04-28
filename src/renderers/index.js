@@ -1,5 +1,3 @@
-// impoport plainRender from './plain-render.js'
+import plainRender from './plainRender';
 
-// plainRender()
-
-// export {plainRender}
+export default plainRender;

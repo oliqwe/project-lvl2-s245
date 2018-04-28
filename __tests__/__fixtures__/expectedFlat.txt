@@ -1,7 +1,12 @@
- {
-    host: hexlet.io
-  + timeout: 20
-  - timeout: 50
-  - proxy: 123.234.53.22
-  + verbose: true
-  }`;
+Property 'common.setting1' remained unchanged
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From value: 'true' to complex value
+Property 'common.setting6.key' remained unchanged
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with complex value
+Property 'group1.baz' was updated. From value: 'bas' to value: 'bars'
+Property 'group1.foo' remained unchanged
+Property 'group1.nest' was updated. From complex value to value: 'str'
+Property 'group2' was removed
+Property 'group3' was added with complex value`

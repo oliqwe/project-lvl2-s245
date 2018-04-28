@@ -51,44 +51,23 @@ const stringify = (obj, offset) => {
   return `${obj}`;
 };
 
+const nodeTypeCorrelation = {
+  nested: (name, val, offset, fn) => `${' '.repeat(offset)}  ${name}: {\n${fn(val, offset + 4)}\n${' '.repeat(offset + 2)}}`,
+  changed: (name, val, offset) => [
+    `${' '.repeat(offset)}- ${name}: ${stringify(val.old, offset + 1)}`,
+    `${' '.repeat(offset)}+ ${name}: ${stringify(val.new, offset + 1)}`,
+  ],
+  removed: (name, val, offset) => `${' '.repeat(offset)}- ${name}: ${stringify(val, offset + 1)}`,
+  added: (name, val, offset) => `${' '.repeat(offset)}+ ${name}: ${stringify(val, offset + 1)}`,
+  unchanged: (name, val, offset) => `${' '.repeat(offset)}  ${name}: ${stringify(val, offset + 1)}`,
+};
 
 export const renderAST = (ast, offset = 2) => {
-  const nodeTypeCorrelation = {
-    nested: (name, val, fn) => `${' '.repeat(offset)}  ${name}: {\n${fn(val, offset + 4)}\n${' '.repeat(offset + 2)}}`,
-    changed: (name, val) => [
-      `${' '.repeat(offset)}- ${name}: ${stringify(val.old, offset + 1)}`,
-      `${' '.repeat(offset)}+ ${name}: ${stringify(val.new, offset + 1)}`,
-    ],
-    removed: (name, val) => `${' '.repeat(offset)}- ${name}: ${stringify(val, offset + 1)}`,
-    added: (name, val) => `${' '.repeat(offset)}+ ${name}: ${stringify(val, offset + 1)}`,
-    unchanged: (name, val) => `${' '.repeat(offset)}  ${name}: ${stringify(val, offset + 1)}`,
-  };
-
   const res = ast.map((node) => {
     const { name, type, value } = node;
     const nodeRender = nodeTypeCorrelation[type];
-    return nodeRender(name, value, renderAST);
+    return nodeRender(name, value, offset, renderAST);
   });
 
   return _.flatten(res).join('\n');
 };
-
-// export const renderAST = (ast, offset = 2) => _.flatten(ast.map(node =>
-//   nodeCorrelation[type],
-//   // const { name, type, value } = node;
-//   // switch (type) {
-//   //   case 'nested':
-//   //     return `${' '.repeat(offset)}  ${name}: {\n${renderAST(value, offset + 4)}\n${' '.repeat(offset + 2)}}`;
-//   //   case 'changed':
-//   //     return [
-//   //       `${' '.repeat(offset)}- ${name}: ${stringify(value.old, offset + 1)}`,
-//   //       `${' '.repeat(offset)}+ ${name}: ${stringify(value.new, offset + 1)}`,
-//   //     ];
-//   //   case 'added':
-//   //     return `${' '.repeat(offset)}+ ${name}: ${stringify(value, offset + 1)}`;
-//   //   case 'removed':
-//   //     return `${' '.repeat(offset)}- ${name}: ${stringify(value, offset + 1)}`;
-//   //   default:
-//   //     return `${' '.repeat(offset)}  ${name}: ${stringify(value, offset + 1)}`;
-//   // }
-// )).join('\n');

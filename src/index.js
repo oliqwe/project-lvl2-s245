@@ -2,14 +2,17 @@
 import fs from 'fs';
 import path from 'path';
 import getParser from './parser';
-import { parseAST, renderAST } from './gendiffAST';
+import { parseAST } from './gendiffAST';
+import plainRenderer from './renderers';
 
 export default (first, second) => {
   const ext = path.extname(first);
   const parse = getParser(ext);
   const before = parse(fs.readFileSync(first, 'utf8'));
   const after = parse(fs.readFileSync(second, 'utf8'));
-  return `{\n${renderAST(parseAST(before, after))}\n}`;
+  const genAst = parseAST(before, after);
+  return plainRenderer(genAst);
+  // return `{\n${renderAST(parseAST(before, after))}\n}`;
 };
 
 
