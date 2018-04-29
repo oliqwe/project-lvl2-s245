@@ -1,19 +1,18 @@
 import plainRender from './plainRender';
 import treeRender from './treeRender';
-import jsonRender from './jsonRender';
 
-export { plainRender, treeRender, jsonRender };
+export { plainRender, treeRender };
 
 const renderers = {
   plain: plainRender,
   tree: treeRender,
-  json: jsonRender,
+  json: JSON.stringify,
 };
 
 export default format => (data) => {
   const render = renderers[format];
   if (!render) {
-    throw new Error(`unkown format: ${format}`);
+    throw new Error(`unknown format: ${format}`);
   }
   return render(data);
 };

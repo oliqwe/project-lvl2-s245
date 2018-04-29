@@ -47,7 +47,6 @@ describe('compare AST json, yaml, ini files plain', () => {
   });
 });
 
-
 describe('compare AST json, yaml, ini files', () => {
   const expected = fs.readFileSync('__tests__/__fixtures__/expectedAST.txt', 'utf8');
 
