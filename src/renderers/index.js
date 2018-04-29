@@ -1,11 +1,13 @@
 import plainRender from './plainRender';
 import treeRender from './treeRender';
+import jsonRender from './jsonRender';
 
-export { plainRender, treeRender };
+export { plainRender, treeRender, jsonRender };
 
 const renderers = {
   plain: plainRender,
   tree: treeRender,
+  json: jsonRender,
 };
 
 export default format => (data) => {
