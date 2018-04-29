@@ -9,4 +9,4 @@ Property 'group1.baz' was updated. From value: 'bas' to value: 'bars'
 Property 'group1.foo' remained unchanged
 Property 'group1.nest' was updated. From complex value to value: 'str'
 Property 'group2' was removed
-Property 'group3' was added with complex value`
+Property 'group3' was added with complex value
