@@ -1,6 +1,3 @@
-const jsonRender = (ast) => {
-  const res = JSON.stringify(ast, null, ' ');
-  return res;
-};
+const jsonRender = ast => JSON.stringify(ast, null, ' ');
 
 export default jsonRender;
